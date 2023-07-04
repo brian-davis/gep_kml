@@ -1,35 +1,74 @@
-# GepKml
+**KmlUtils**
 
-TODO: Delete this and the text below, and describe your gem
+This is a simple Ruby gem I've built to make working with Google Earth Pro KML easier.
+I'm just a hobbyist, so this is very basic at this point.  There are other more full-featured KML gems [available here](https://rubygems.org/search?query=kml) and I refer you to those for more critical functionality.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/gep_kml`. To experiment with that code, run `bin/console` for an interactive prompt.
+**Installation**
 
-## Installation
+This is a version 0 project.  It is not published to RubyGems.  It is subject to change at any time.
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Download from this Github page, cd into the project directory and run `bundle install`.
 
-Install the gem and add to the application's Gemfile by executing:
+To view docs:
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+```bash
+$ yardoc
+$ yard server
+```
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+Then open a browser window at `localhost:8808`.
 
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+**Usage**
 
-## Usage
+```ruby
+>> coordinates =
+      KmlUtils::Coordinates.new(
+        { latitude: "51°10′44″N", longitude: "1°49′34″W" },
+      )
+   pin = KmlUtils::Pin.build_from_coordinates(coordinates, "Stonehenge")
+=>
+#<KmlUtils::Pin:0x0000000104a89558 ...>
+>> pin.xml.class
+=> Nokogiri::XML::Document
+```
 
-TODO: Write usage instructions here
+See YARD docs for full documentation of classes and modules.
 
-## Development
+There is also command-line usage:
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```bash
+$ bin/gep_kml --help
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+$ bin/gep_kml --help
+  NAME:
 
-## Contributing
+    gep_kml
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/gep_kml.
+  DESCRIPTION:
 
-## License
+    Google Earth Pro KML utilities.
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+  COMMANDS:
+
+    antipode          Generate an antipode point pin KML file.
+    decimal_to_degree Converts from decimal format to degree/minutes/seconds format.
+    degree_to_decimal Converts from degree/minutes/seconds format to decimal format.
+    great_circle      Generate a new line KML file drawing a great circle connection two points.
+    help              Display global or [command] help documentation
+    pin               Generate a new pin KML file from a coordinates string.
+
+  GLOBAL OPTIONS:
+
+    -h, --help
+        Display help documentation
+
+    -v, --version
+        Display version information
+
+    -t, --trace
+        Display backtrace when an error occurs
+
+  AUTHOR:
+
+    Brian Davis <horizonridgestudio@fastmail.com>
+```

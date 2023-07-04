@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Stonehenge-Temple of Jupiter, Baalbek Great Circle</name>
+	<Style id="redLine">
+		<LineStyle>
+			<color>7fff00ff</color>
+			<width>4</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>7f00ff00</color>
+		</PolyStyle>
+	</Style>
+	<Placemark>
+		<styleUrl>#yellowLine</styleUrl>
+		<LineString>
+			<extrude>1</extrude>
+			<tessellate>1</tessellate>
+			<coordinates>-1.826198,51.178812,0.0 <!-- Stonehenge -->
+36.204209,34.007011,0.0 <!-- Temple of Jupiter, Baalbek -->
+178.173802,-51.178812,0.0 <!-- Stonehenge antipode -->
+-143.795791,-34.007011,0.0 <!-- Temple of Jupiter, Baalbek antipode -->
+-1.826198,51.178812,0.0 <!-- Stonehenge --></coordinates>
+		</LineString>
+	</Placemark>
+</Document>
+</kml>
