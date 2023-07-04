@@ -1,6 +1,6 @@
-**KmlUtils**
+**GepKml**
 
-This is a simple Ruby gem I've built to make working with Google Earth Pro KML easier.
+This is a simple Ruby gem I've built to make working with Google Earth Pro (GEP) Keyhole Markup Language (KML) easier.
 I'm just a hobbyist, so this is very basic at this point.  There are other more full-featured KML gems [available here](https://rubygems.org/search?query=kml) and I refer you to those for more critical functionality.
 
 **Installation**

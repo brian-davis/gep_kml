@@ -4,6 +4,7 @@ require "minitest/autorun"
 require 'minitest/reporters'
 Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(:color => true)]
 
+# TODO: refactor, use new /tmp foler as in CLI tests.
 fixture_path = File.expand_path(File.join(__dir__, "fixtures"))
 GepKml::FileSystem.save_path = fixture_path
 
