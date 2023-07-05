@@ -1,6 +1,6 @@
 require_relative "../test_helper"
 
-# bundle exec rake test TEST=test/test_pin.rb
+# bundle exec rake test TEST=test/lib/test_pin.rb
 class TestPin < Minitest::Test
   ### Class methods ###
   def test_load_guard
@@ -15,15 +15,12 @@ class TestPin < Minitest::Test
     assert_kind_of(GepKml::Pin, GepKml::Pin.load("rock_of_gibraltar"))
   end
 
-  # bundle exec rake test TEST=test/test_pin.rb TESTOPTS="--name=test_build_from_coordinates -v"
+  # bundle exec rake test TEST=test/lib/test_pin.rb TESTOPTS="--name=test_build_from_coordinates -v"
   def test_build_from_coordinates
     # https://www.megalithic.co.uk/article.php?sid=54013
     # Catterick Henge
     # Latitude 54.381838N  Longitude: 1.646771W
-
-    coordinates =
-      GepKml::Coordinates.new({ latitude: 54.381838, longitude: -1.646771 })
-
+    coordinates = GepKml::Coordinates.new({ latitude: 54.381838, longitude: -1.646771 })
     pin = GepKml::Pin.build_from_coordinates(coordinates, "Catterick Henge")
     refute_nil(pin)
     assert_equal("Catterick Henge", pin.name)
@@ -31,16 +28,45 @@ class TestPin < Minitest::Test
     assert_equal("54.381838,-1.646771,0.0", pin.coordinates.to_human)
   end
 
-  # bundle exec rake test TEST=test/test_pin.rb TESTOPTS="--name=test_build_from_coordinates_string -v"
+  # bundle exec rake test TEST=test/lib/test_pin.rb TESTOPTS="--name=test_build_from_coordinates_st_michaels_mt -v"
+  def test_build_from_coordinates_st_michaels_mt
+    coordinates = GepKml::Coordinates.new({ latitude: 50.116, longitude: -5.4772 })
+    pin = GepKml::Pin.build_from_coordinates(coordinates, "St. Michael's Mount")
+    refute_nil(pin)
+    assert_equal("St. Michael's Mount", pin.name)
+    assert_equal("-5.4772,50.116,0.0", pin.coordinates_tag) # GEP: long. first
+    assert_equal("50.116,-5.4772,0.0", pin.coordinates.to_human) # normal: lat. first
+  end
+
+  # bundle exec rake test TEST=test/lib/test_pin.rb TESTOPTS="--name=test_build_from_coordinates_st_michaels_mt_strings -v"
+  def test_build_from_coordinates_st_michaels_mt_strings
+    coordinates = GepKml::Coordinates.new({ latitude: "50.116", longitude: "-5.4772" })
+    pin = GepKml::Pin.build_from_coordinates(coordinates, "St. Michael's Mount")
+    refute_nil(pin)
+    assert_equal("St. Michael's Mount", pin.name)
+    assert_equal("-5.4772,50.116,0.0", pin.coordinates_tag) # GEP: long. first
+    assert_equal("50.116,-5.4772,0.0", pin.coordinates.to_human) # normal: lat. first
+  end
+
+  # bundle exec rake test TEST=test/lib/test_pin.rb TESTOPTS="--name=test_build_from_coordinates_st_michaels_mt_mixup -v"
+  def test_build_from_coordinates_st_michaels_mt_mixup
+    # "-5.4772, 50.116" # grabbed from pin file (GEP long. first) without correcting
+    coordinates = GepKml::Coordinates.new({ latitude: -5.4772, longitude: 50.116 })
+    pin = GepKml::Pin.build_from_coordinates(coordinates, "St. Michael's Mount MIXUP")
+    refute_nil(pin)
+    assert_equal("St. Michael's Mount MIXUP", pin.name)
+    assert_equal("50.116,-5.4772,0.0", pin.coordinates_tag) # GEP: long. first
+    assert_equal("-5.4772,50.116,0.0", pin.coordinates.to_human) # normal: lat. first
+  end
+
+  # bundle exec rake test TEST=test/lib/test_pin.rb TESTOPTS="--name=test_build_from_coordinates_string -v"
   def test_build_from_coordinates_string
     # Latitude: 37.024132N  Longitude: 4.548342W
     # Site Name: Cueva de Menga
     # https://www.megalithic.co.uk/article.php?sid=12111
-
-    coordinates =
-      GepKml::Coordinates.new(
-        { latitude: "37.024132N", longitude: "4.548342W" },
-      )
+    coordinates = GepKml::Coordinates.new({
+      latitude: "37.024132N", longitude: "4.548342W"
+    })
     pin = GepKml::Pin.build_from_coordinates(coordinates, "Cueva de Menga")
     refute_nil(pin)
     assert_equal("Cueva de Menga", pin.name)
@@ -48,7 +74,7 @@ class TestPin < Minitest::Test
     assert_equal("37.024132,-4.548342,0.0", pin.coordinates.to_human)
   end
 
-  # bundle exec rake test TEST=test/test_pin.rb TESTOPTS="--name=test_build_from_coordinates_string_degree -v"
+  # bundle exec rake test TEST=test/lib/test_pin.rb TESTOPTS="--name=test_build_from_coordinates_string_degree -v"
   def test_build_from_coordinates_string_degree
     # 51°10′44″N 1°49′34″W
     # https://en.wikipedia.org/wiki/Stonehenge
@@ -107,7 +133,7 @@ class TestPin < Minitest::Test
     assert_equal(expected, result)
   end
 
-  # bundle exec rake test TEST=test/test_pin.rb TESTOPTS="--name=test_to_human! -v"
+  # bundle exec rake test TEST=test/lib/test_pin.rb TESTOPTS="--name=test_to_human! -v"
   def test_to_human
     result = pin_fixture.dup.coordinates.to_human
     expected = "36.14429,-5.341408,0.0"
@@ -118,7 +144,7 @@ class TestPin < Minitest::Test
     assert_respond_to(pin_fixture, "save!")
   end
 
-  # bundle exec rake test TEST=test/test_pin.rb TESTOPTS="--name=test_write_changes_on_save! -v"
+  # bundle exec rake test TEST=test/lib/test_pin.rb TESTOPTS="--name=test_write_changes_on_save! -v"
   def test_write_changes_on_save!
     subject = pin_fixture.dup
     subject.name = "test1"
@@ -150,7 +176,7 @@ class TestPin < Minitest::Test
     assert_equal("Rock of Gibraltar", subject.name)
   end
 
-  # bundle exec rake test TEST=test/test_pin.rb TESTOPTS="--name=test_set_coordinates_with_antipode! -v"
+  # bundle exec rake test TEST=test/lib/test_pin.rb TESTOPTS="--name=test_set_coordinates_with_antipode! -v"
   def test_set_coordinates_with_antipode!
     subject = pin_fixture.dup
     assert_equal(

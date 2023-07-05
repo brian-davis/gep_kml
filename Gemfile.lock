@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gep_kml (0.1.0)
+    gep_kml (0.2.0)
       commander (~> 4.6.0)
       nokogiri (~> 1.15.2)
 

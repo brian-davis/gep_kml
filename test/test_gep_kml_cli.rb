@@ -94,7 +94,23 @@ class TestGemDemoCLI < Minitest::Test
     clear_tmp_files
   end
 
-  # TODO: invalid: pin "-5.4772, 50.116" st_michaels_mount
+  # rake test TEST=test/test_gep_kml_cli.rb TESTOPTS="--name=test_pin_valid_geohack_name_with_spaces -v"
+  def test_pin_valid_geohack_name_with_spaces
+    command = <<~SHELL.strip
+    SAVE_DIR=#{TMP_DIR} #{CLI_EXECUTABLE} pin "51° 10′ 44″ N, 1° 49′ 34″ W" "That Stonehenge Place"
+    SHELL
+
+    out, err = capture_subprocess_io do
+      system(command)
+    end
+
+    assert_equal("Pin saved to: that_stonehenge_place.kml", out.strip)
+    assert(Dir.entries(TMP_DIR).include?("that_stonehenge_place.kml"))
+    assert_empty(err)
+  ensure
+    clear_tmp_files
+  end
+
   def test_pin_valid_decimal
     command = <<~SHELL.strip
     SAVE_DIR=#{TMP_DIR} #{CLI_EXECUTABLE} pin "51.178889, -1.826111" stonehenge
@@ -106,6 +122,25 @@ class TestGemDemoCLI < Minitest::Test
 
     assert_equal("Pin saved to: stonehenge.kml", out.strip)
     assert(Dir.entries(TMP_DIR).include?("stonehenge.kml"))
+    assert_empty(err)
+  ensure
+    clear_tmp_files
+  end
+
+  # rake test TEST=test/test_gep_kml_cli.rb TESTOPTS="--name=test_pin_valid_decimal_negative_first_value -v"
+  def test_pin_valid_decimal_negative_first_value
+
+    # double escape char here.
+    command = <<~SHELL.strip
+    SAVE_DIR=#{TMP_DIR} #{CLI_EXECUTABLE} pin "\\-5.4772, 50.116" st_michaels_mt_mixup
+    SHELL
+
+    out, err = capture_subprocess_io do
+      system(command)
+    end
+    assert_equal("Pin saved to: st_michaels_mt_mixup.kml", out.strip)
+    assert(Dir.entries(TMP_DIR).include?("st_michaels_mt_mixup.kml"))
+    refute_equal("invalid option: -5.4772, 50.116", err.strip)
     assert_empty(err)
   ensure
     clear_tmp_files

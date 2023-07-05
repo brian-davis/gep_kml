@@ -1,4 +1,5 @@
 require "rubygems"
+require "pry"
 require "commander"
 require_relative "../lib/gep_kml"
 
@@ -74,7 +75,7 @@ class GepKmlCLI
       c.syntax = "gep_kml pin COORDINATES NAME [options]"
       c.summary = "Generate a new pin KML file from a coordinates string."
       c.description =
-        "Pass a properly-escaped string with coordinate data (e.g. grabbed from Geohack), and a name string, to save a new .kml file with KML for a Google Earth pin."
+        "Pass a properly-escaped string with coordinate data (e.g. grabbed from Geohack), and a name string, to save a new .kml file with KML for a Google Earth pin. If passing a decimal-format argument with a leading minus-sign, the minus sign must be escaped."
 
       c.example "Geohack degree/minute/second",
                 %q(
@@ -86,6 +87,11 @@ class GepKmlCLI
                   gep_kml pin "51.178889, -1.826111" stonehenge
                 )
 
+      # ruby double escape here.  real usage, use single escape
+      c.example "Geohack Lat/Lon decimal with initial negative, requires escape",
+                %q(
+                  gep_kml pin "\\-5.4772, 50.116" somewhere_tricky
+                )
       # TODO
       # c.option "--filename STRING",
       #          String,
@@ -104,18 +110,17 @@ class GepKmlCLI
         working_dir = save_dir || Dir.pwd # absolute
 
         # TODO: DRY regexes.
-        coordinates =
-          if coordinate_str.match?(/-*\d+\.*\d*,\s-*\d.*\d*/)
-            # e.g. "51.178889, -1.826111"
-            latitude, longitude =
-              coordinate_str.split(",").map { |str| str.delete(" ") }
-            GepKml::Coordinates.new({ latitude: latitude, longitude: longitude })
-          else
-            # e.g. "51° 10′ 44″ N, 1° 49′ 34″ W"
-            GepKml::Coordinates.new({ simple: coordinate_str })
-          end
+        coordinates = if coordinate_str.match?(/-*\d+\.*\d*,\s-*\d.*\d*/)
+          # e.g. "51.178889, -1.826111"
+          latitude, longitude = coordinate_str.split(",").map { |str| str.delete(" ").delete("\\") }
+          GepKml::Coordinates.new({ latitude: latitude, longitude: longitude })
+        else
+          # e.g. "51° 10′ 44″ N, 1° 49′ 34″ W"
+          GepKml::Coordinates.new({ simple: coordinate_str })
+        end
 
         pin = GepKml::Pin.build_from_coordinates(coordinates, place_name)
+        # binding.pry
 
         pin.filepath = working_dir
         pin.save!

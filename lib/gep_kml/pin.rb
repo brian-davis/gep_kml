@@ -57,19 +57,18 @@ module GepKml
     end
 
     # Set both <name> tags
-    alias_method :coordinates=,
-                 def coordinates_tag=(new_coordinates)
-                   return unless new_coordinates.is_a?(GepKml::Coordinates)
-                   xml
-                     .css("Placemark Point coordinates")
-                     .each { |x| x.content = new_coordinates.to_s }
-                   xml
-                     .css("Placemark LookAt longitude")
-                     .each { |x| x.content = new_coordinates.longitude }
-                   xml
-                     .css("Placemark LookAt latitude")
-                     .each { |x| x.content = new_coordinates.latitude }
-                 end
+    alias_method :coordinates=, def coordinates_tag=(new_coordinates)
+      return unless new_coordinates.is_a?(GepKml::Coordinates)
+      xml
+        .css("Placemark Point coordinates")
+        .each { |x| x.content = new_coordinates.to_s }
+      xml
+        .css("Placemark LookAt longitude")
+        .each { |x| x.content = new_coordinates.longitude }
+      xml
+        .css("Placemark LookAt latitude")
+        .each { |x| x.content = new_coordinates.latitude }
+    end
 
     def coordinates
       GepKml::Coordinates.new(kml_csv: self.coordinates_tag)
@@ -98,13 +97,12 @@ module GepKml
         self.filepath = File.split(self.filepath).first
       end
 
-      new_file =
-        if self.filepath.nil?
-          # fallback to default save path (app-level config)
-          save_path(self.filename)
-        else
-          File.join(self.filepath, self.filename)
-        end
+      new_file = if self.filepath.nil?
+        # fallback to default save path (app-level config)
+        save_path(self.filename)
+      else
+        File.join(self.filepath, self.filename)
+      end
       #=> "/path/to/file.kml"
 
       save_to_file(new_file, self.text) and new_file
