@@ -70,5 +70,5 @@ $ bin/gep_kml --help
 
   AUTHOR:
 
-    Brian Davis <horizonridgestudio@fastmail.com>
+    Brian Davis <admin@horizonridge.studio>
 ```
