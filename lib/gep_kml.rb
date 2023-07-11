@@ -3,6 +3,7 @@ require "cgi"
 
 require_relative "gep_kml/version"
 require_relative "gep_kml/mixins/file_system"
+require_relative "gep_kml/mixins/geometry"
 
 require_relative "gep_kml/pin"
 require_relative "gep_kml/coordinates"

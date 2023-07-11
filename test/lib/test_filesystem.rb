@@ -1,6 +1,6 @@
 require_relative "../test_helper"
 
-class TestGepKml < Minitest::Test
+class TestFileSystem < Minitest::Test
   def test_save_path
     # TODO: refactor save_path, make consistent with CLI
     assert_match(/gep_kml/, GepKml::FileSystem.save_path)
