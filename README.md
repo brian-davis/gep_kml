@@ -9,7 +9,7 @@ This is a version 0 project.  It is not published to RubyGems.  It is subject to
 
 This Ruby library reuqires an installed Ruby interpreter.  [This guide](https://gorails.com/setup) may be helpful.
 
-Download the repo code from this Github page into a project directory, cd into the project directory and run `gem install pkg/gem_demo-0.2.3.gem --local`.
+Download the repo code from this Github page into a project directory, cd into the project directory and run `gem install pkg/gep_kml-0.2.3.gem --local`.
 
 Given a properly configured _Rubygems_ set up, this should make a CLI tool available:
 
