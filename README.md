@@ -77,3 +77,5 @@ $ gep_kml pin "51° 10′ 44″ N, 1° 49′ 34″ W" stonehenge
 ```
 
 This would take a coordinates string as the first argument, and a name as the second, and create a `.kml` pin file, which can then be loaded into Google Earth Pro (control-O).
+
+For more information, please read [this blog post](https://www.horizonridge.studio/articles/draw-a-great-circle-with-kml-in-google-earth-pro).
