@@ -37,8 +37,6 @@ As a command-line utility:
 
 ```bash
 $ bin/gep_kml --help
-
-$ bin/gep_kml --help
   NAME:
 
     gep_kml
