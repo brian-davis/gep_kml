@@ -7,34 +7,33 @@ I'm just a hobbyist, so this is very basic at this point.  There are other more 
 
 This is a version 0 project.  It is not published to RubyGems.  It is subject to change at any time.
 
-Download from this Github page, cd into the project directory and run `bundle install`.
+This Ruby library reuqires an installed Ruby interpreter.  [This guide](https://gorails.com/setup) may be helpful.
 
-To view docs:
+Download the repo code from this Github page into a project directory, cd into the project directory and run `gem install pkg/gem_demo-0.2.0.gem --local`.
+
+Given a properly configured _Rubygems_ set up, this should make a CLI tool available:
 
 ```bash
-$ yardoc
-$ yard server
+$ gep_kml --help
 ```
-
-Then open a browser window at `localhost:8808`.
 
 **Usage**
 
+As a `require` Ruby library:
+
 ```ruby
 >> coordinates =
-      KmlUtils::Coordinates.new(
+      GepKml::Coordinates.new(
         { latitude: "51°10′44″N", longitude: "1°49′34″W" },
       )
-   pin = KmlUtils::Pin.build_from_coordinates(coordinates, "Stonehenge")
+   pin = GepKml::Pin.build_from_coordinates(coordinates, "Stonehenge")
 =>
-#<KmlUtils::Pin:0x0000000104a89558 ...>
+#<GepKml::Pin:0x0000000104a89558 ...>
 >> pin.xml.class
 => Nokogiri::XML::Document
 ```
 
-See YARD docs for full documentation of classes and modules.
-
-There is also command-line usage:
+As a command-line utility:
 
 ```bash
 $ bin/gep_kml --help
@@ -72,3 +71,11 @@ $ bin/gep_kml --help
 
     Brian Davis <admin@horizonridge.studio>
 ```
+
+So, for example, you could visit [geohack.com](https://geohack.toolforge.org/geohack.php?pagename=Stonehenge&params=51_10_44_N_1_49_34_W_type:landmark_region:GB-WIL), select-copy the coordinates text, then `cd` to a directory where you would like to save KML data, and then run this:
+
+```bash
+$ gep_kml pin "51° 10′ 44″ N, 1° 49′ 34″ W" stonehenge
+```
+
+This would take a coordinates string as the first argument, and a name as the second, and create a `.kml` pin file, which can then be loaded into Google Earth Pro (control-O).
